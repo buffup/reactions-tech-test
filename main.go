@@ -12,6 +12,7 @@ import (
 
 	"github.com/buffup/reactions-tech-test/api"
 	"github.com/buffup/reactions-tech-test/daemon"
+	"github.com/buffup/reactions-tech-test/pubsub"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/sync/errgroup"
@@ -56,7 +57,7 @@ func main() {
 	eg.Go(func() error {
 		daemon := &daemon.Daemon{
 			Cache:        redisClient,
-			Pubsub:       &PubSub{},
+			Pubsub:       &pubsub.PubSub{},
 			SendInterval: time.Second,
 		}
 
