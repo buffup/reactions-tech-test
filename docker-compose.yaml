@@ -1,0 +1,32 @@
+services:
+  redis:
+    image: redis:latest
+    networks:
+      - testing
+    ports:
+      - "6379:6379"
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.api
+    networks:
+      - testing
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+  k6:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.k6
+    networks:
+      - testing
+    depends_on:
+      - api
+    restart: no
+
+networks:
+  testing:
+    name: testing
+    driver: bridge
